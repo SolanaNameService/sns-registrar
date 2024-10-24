@@ -73,6 +73,7 @@ pub fn get_special_discount_and_fee(referrer_key: &Pubkey) -> (Option<u8>, Optio
     #[cfg(not(feature = "no-special-discount-fee"))]
     {
         let now = Clock::get().unwrap().unix_timestamp as u64;
+        solana_program::msg!("time: {}", now);
         let mut discount = None;
         let mut fee = None;
 

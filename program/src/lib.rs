@@ -72,7 +72,7 @@ pub mod constants {
     pub type SpecialDiscountFee = (Option<u8>, u64, u64, Option<u8>, u64, u64);
     pub static REFERRER_DISCOUNT_AND_FEE: phf::Map<&'static str, SpecialDiscountFee> = phf_map! {
         // Test wallet
-        "3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1" => (Some(10), 1682864495, 1779756628, Some(10), 1682864495, 1779756628),
+        "3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1" => (Some(10), 1682864495, 1719226965, Some(10), 1682864495, 1719226965),
         // Solscan
         "5PwNeqQPiygQks9R17jUAodZQNuhvCqqkrxSaeNE8qTR" => (None, 0, 0, Some(20), 0, u64::MAX),
         // Domain Labs

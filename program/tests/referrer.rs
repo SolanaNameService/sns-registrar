@@ -24,10 +24,6 @@ async fn test_state() {
         ..
     } = TestContext::new().await;
 
-    crate::common::utils::warp_to_timestamp(&mut ctx, 1682864495 + 1)
-        .await
-        .unwrap();
-
     let mut expected_vault_amount = 0;
     let mut expected_ref_fees = 0;
     let referrer = Pubkey::from_str("3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1").unwrap();
@@ -44,7 +40,11 @@ async fn test_state() {
         .await
         .unwrap();
 
-    // Test: Create domain without referrer
+    crate::common::utils::warp_to_timestamp(&mut ctx, 1682864495 + 1)
+        .await
+        .unwrap();
+
+    // Test: Create domain with referrer
     let domain = random_string();
     let usd_price = sns_registrar::utils::get_usd_price(domain.len());
     let domain_key = sns_registrar::utils::get_name_key(&domain, None).unwrap();
