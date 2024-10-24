@@ -12,7 +12,9 @@ use solana_program::{program_option::COption, program_pack::Pack, pubkey::Pubkey
 use solana_program_test::{processor, ProgramTest, ProgramTestContext};
 use solana_sdk::{
     account::Account,
+    clock::Clock,
     signature::{Keypair, Signer},
+    sysvar::SysvarId,
 };
 use spl_associated_token_account::{
     get_associated_token_address, instruction::create_associated_token_account,
@@ -348,6 +350,12 @@ impl<'a> TestContext {
             pyth_accounts.fida_feed_pull.1,
             pyth_accounts.fida_feed_pull.0.clone(),
         );
+
+        let clock: Clock = Clock {
+            unix_timestamp: 1682864495,
+            ..Default::default()
+        };
+        program_test.add_sysvar_account(Clock::id(), &clock);
 
         let ctx = program_test.start_with_context().await;
 
