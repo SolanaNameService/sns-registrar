@@ -5,7 +5,11 @@ use crate::{
     },
     processor::create_split_v2,
 };
-use bonfida_utils::{checks::check_account_owner, fp_math::fp32_div, tokens::SupportedToken};
+use bonfida_utils::{
+    checks::{check_account_key, check_account_owner},
+    fp_math::fp32_div,
+    tokens::SupportedToken,
+};
 
 use solana_program::{
     account_info::AccountInfo, clock::Clock, hash::hashv, program_error::ProgramError,
@@ -141,13 +145,15 @@ pub fn get_token_usd_price_checked_v2(
     pyth_feed: &AccountInfo<'_>,
     mint: &Pubkey,
 ) -> Result<u64, ProgramError> {
+    let token = SupportedToken::from_mint(mint)?;
+    check_account_key(pyth_feed, &token.price_feed_account_key())?;
     let token_price = bonfida_utils::pyth::get_oracle_price_fp32_v2(
         mint,
         pyth_feed,
-        SupportedToken::from_mint(mint)?.decimals(),
+        token.decimals(),
         6,
         &Clock::get().unwrap(),
-        5 * 60,
+        60,
     )?;
     Ok(token_price)
 }
