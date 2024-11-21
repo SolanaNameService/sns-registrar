@@ -27,7 +27,7 @@ borsh = "0.10.3"
 thiserror = "1.0.24"
 spl-token = {version = "3.2.0", features = ["no-entrypoint"]}
 spl-associated-token-account = "2.2.0"
-bonfida-utils = "0.6.4"
+bonfida-utils = "0.6.5"
 spl-name-service = {version = "0.3.0", features = ["no-entrypoint"]}
 mpl-token-metadata = { version = "4.0.0" }
 unicode-segmentation = "1.10.1"
