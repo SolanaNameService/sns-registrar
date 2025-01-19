@@ -92,7 +92,7 @@ pub mod constants {
         // Nansen
         "FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP" => (Some(20), 0, 1731636000, None, 0, 0),
         // SNS Campaign
-        "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR" => (Some(50), 1737266400, 1737435660, None, 0, 0)
+        "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR" => (Some(50), 1737266400, 1737608460, None, 0, 0)
 
     };
     // Fees taken for the reselling of domain names
