@@ -28,7 +28,7 @@ pub mod constants {
     pub const ROOT_DOMAIN_ACCOUNT: Pubkey = pubkey!("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx");
     pub const PYTH_MAPPING_ACCOUNT: Pubkey =
         pubkey!("AHtgzX45WTKfkPG53L6WYhGEXwQkN1BVknET3sVsLL8J");
-    pub const REFERRER_WHITELIST: [Pubkey; 14] = [
+    pub const REFERRER_WHITELIST: [Pubkey; 15] = [
         pubkey!("3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1"), // Test wallet
         pubkey!("DM1jJCkZZEwY5tmWbgvKRxsDFzXCdbfrYCCH1CtwguEs"), // 4Everland
         pubkey!("ADCp4QXFajHrhy4f43pD6GJFtQLkdBY2mjS9DfCk7tNW"), // Bandit network
@@ -43,6 +43,7 @@ pub mod constants {
         pubkey!("XEy9o73JBN2pEuN7aspe8mVLaWbL4ozjJs1tNRxx8bL"),  // GoDID
         pubkey!("D5cLoAGjNTHKU1UGv2bYwbnyRoGTMe3sbpLtJW3fRq91"), // SuiNS
         pubkey!("FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP"), // Nansen
+        pubkey!("5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR"), // SNS Campaign
     ];
     /// Percentage of domain name creation cost trasnfered to the referrer if specified
     pub const REFERRER_FEES_PCT: u64 = 5;
@@ -90,6 +91,8 @@ pub mod constants {
         "D5cLoAGjNTHKU1UGv2bYwbnyRoGTMe3sbpLtJW3fRq91" => (Some(20), 0, 1730311200, None, 0, 0),
         // Nansen
         "FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP" => (Some(20), 0, 1731636000, None, 0, 0),
+        // SNS Campaign
+        "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR" => (Some(50), 1737266400, 1737435660, None, 0, 0)
 
     };
     // Fees taken for the reselling of domain names
