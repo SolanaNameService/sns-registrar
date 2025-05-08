@@ -168,9 +168,9 @@ pub mod constants {
 #[cfg(not(feature = "no-entrypoint"))]
 solana_security_txt::security_txt! {
     name: env!("CARGO_PKG_NAME"),
-    project_url: "http://bonfida.org",
-    contacts: "email:security@bonfida.com,link:https://twitter.com/bonfida",
-    policy: "https://immunefi.com/bounty/bonfida",
+    project_url: "http://sns.id",
+    contacts: "email:security@sns.id,link:https://x.com/sns",
+    policy: "https://immunefi.com/bounty/sns",
     preferred_languages: "en",
     auditors: "Halborn"
 }
