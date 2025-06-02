@@ -7,7 +7,7 @@ use solana_program::{
     program_pack::Pack,
     pubkey::Pubkey,
     rent::Rent,
-    system_instruction::create_account,
+    system_instruction,
     sysvar::Sysvar,
 };
 
@@ -43,7 +43,7 @@ impl Cpi {
             )?;
         }
 
-        let create_state_instruction = create_account(
+        let create_state_instruction = system_instruction::create_account(
             fee_payer.key,
             account_to_create.key,
             rent,
