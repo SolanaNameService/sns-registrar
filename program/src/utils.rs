@@ -12,7 +12,7 @@ use bonfida_utils::{
 };
 
 use solana_program::{
-    account_info::AccountInfo, clock::Clock, hash::hashv, program_error::ProgramError,
+    account_info::AccountInfo, clock::Clock, hash::hashv, msg, program_error::ProgramError,
     program_pack::Pack, pubkey::Pubkey, sysvar::Sysvar,
 };
 
@@ -129,6 +129,7 @@ pub fn get_domain_price_checked<'a, 'b: 'a>(
     accounts: &create_split_v2::Accounts<'a, AccountInfo<'b>>,
 ) -> Result<u64, ProgramError> {
     let usd_price = get_usd_price(get_grapheme_len(domain_name));
+    msg!("Registering domwin for {} USD", usd_price);
     let buyer_token_mint =
         spl_token::state::Account::unpack_from_slice(&accounts.buyer_token_source.data.borrow())
             .unwrap()
