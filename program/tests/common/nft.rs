@@ -21,7 +21,7 @@ pub fn get_metadata() -> Metadata {
         mint: NFT_MINT,
         primary_sale_happened: true,
         is_mutable: true,
-        edition_nonce: Some(255),
+        edition_nonce: None,
         token_standard: Some(mpl_token_metadata::types::TokenStandard::NonFungible),
         collection: Some(Collection {
             key: COLLECTION_KEY,
