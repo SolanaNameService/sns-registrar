@@ -169,7 +169,7 @@ pub mod constants {
 solana_security_txt::security_txt! {
     name: env!("CARGO_PKG_NAME"),
     project_url: "http://sns.id",
-    contacts: "email:security@sns.id,link:https://x.com/sns",
+    contacts: "email:contact@sns.id,link:https://x.com/sns",
     policy: "https://immunefi.com/bounty/sns",
     preferred_languages: "en",
     auditors: "Halborn"
