@@ -1,7 +1,7 @@
 <h1 align="center">SNS Registrar</h1>
 <br />
 <p align="center">
-<img width="150" src="https://i.imgur.com/XkeyxdG.png"/>
+<img width="250" src="https://i.imgur.com/XkeyxdG.png"/>
 </p>
 <p align="center">
 <a href="https://twitter.com/sns">
