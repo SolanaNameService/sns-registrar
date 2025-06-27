@@ -26,7 +26,8 @@ pub fn get_usd_price(len: usize) -> u64 {
         2 => 700,
         3 => 640,
         4 => 160,
-        _ => 20,
+        i if i < 10 => 20,
+        _ => 1,
     };
     #[cfg(not(feature = "devnet"))]
     return multiplier * 1_000_000;
