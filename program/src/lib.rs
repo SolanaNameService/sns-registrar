@@ -45,7 +45,7 @@ pub mod constants {
         pubkey!("FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP"), // Nansen
         pubkey!("5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR"), // SNS Campaign
         pubkey!("452cMqDHe5cf1Z96HxUNaQjiLckhMiZdZ5abe7oQ2iRB"), // Endless Domains
-        pubkey!("J8wRRXstYZRMVtj9eCvZw1oAmPQpe2UAhY2wcxiKWktZ"), // Coupon Vault
+        pubkey!("8hmebGRQpZG8RpR3SFTfnuY2K4QgNxyAtqdhR9UuFksB"), // Coupon Vault
     ];
     /// Percentage of domain name creation cost trasnfered to the referrer if specified
     pub const REFERRER_FEES_PCT: u64 = 5;
@@ -96,7 +96,7 @@ pub mod constants {
         // SNS Campaign
         "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR" => (Some(50), 1737266400, 1737608460, None, 0, 0),
         // Coupon Vault
-        "J8wRRXstYZRMVtj9eCvZw1oAmPQpe2UAhY2wcxiKWktZ" => (None, 0, 0, Some(100), 0, u64::MAX),
+        "8hmebGRQpZG8RpR3SFTfnuY2K4QgNxyAtqdhR9UuFksB" => (None, 0, 0, Some(100), 0, u64::MAX),
     };
     // Fees taken for the reselling of domain names
     // | Tier | Percentage of payout    | Requirements   |
