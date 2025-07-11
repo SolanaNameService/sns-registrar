@@ -7,7 +7,7 @@ use solana_program::{
     program_pack::Pack,
     pubkey::Pubkey,
     rent::Rent,
-    system_instruction::create_account,
+    system_instruction,
     sysvar::Sysvar,
 };
 
@@ -25,8 +25,25 @@ impl Cpi {
         space: usize,
     ) -> ProgramResult {
         let rent = Rent::get()?.minimum_balance(space);
+        let account_lamports = account_to_create.lamports();
+        if account_lamports != 0 && account_to_create.data_is_empty() {
+            let defund_created_account = system_instruction::transfer(
+                account_to_create.key,
+                fee_payer.key,
+                account_lamports,
+            );
+            invoke_signed(
+                &defund_created_account,
+                &[
+                    system_program.clone(),
+                    fee_payer.clone(),
+                    account_to_create.clone(),
+                ],
+                &[signer_seeds],
+            )?;
+        }
 
-        let create_state_instruction = create_account(
+        let create_state_instruction = system_instruction::create_account(
             fee_payer.key,
             account_to_create.key,
             rent,

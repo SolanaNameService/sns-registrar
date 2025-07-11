@@ -113,7 +113,7 @@ pub async fn advance_clock_by(
 const CHARSET: &str = "1234567890";
 
 pub fn random_string() -> String {
-    random_string::generate(10, CHARSET)
+    random_string::generate(8, CHARSET)
 }
 
 pub async fn get_vault(ctx: &mut ProgramTestContext, key: &Pubkey) -> spl_token::state::Account {

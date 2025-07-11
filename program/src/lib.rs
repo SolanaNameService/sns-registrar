@@ -28,7 +28,7 @@ pub mod constants {
     pub const ROOT_DOMAIN_ACCOUNT: Pubkey = pubkey!("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx");
     pub const PYTH_MAPPING_ACCOUNT: Pubkey =
         pubkey!("AHtgzX45WTKfkPG53L6WYhGEXwQkN1BVknET3sVsLL8J");
-    pub const REFERRER_WHITELIST: [Pubkey; 16] = [
+    pub const REFERRER_WHITELIST: [Pubkey; 18] = [
         pubkey!("3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1"), // Test wallet
         pubkey!("DM1jJCkZZEwY5tmWbgvKRxsDFzXCdbfrYCCH1CtwguEs"), // 4Everland
         pubkey!("ADCp4QXFajHrhy4f43pD6GJFtQLkdBY2mjS9DfCk7tNW"), // Bandit network
@@ -44,7 +44,10 @@ pub mod constants {
         pubkey!("D5cLoAGjNTHKU1UGv2bYwbnyRoGTMe3sbpLtJW3fRq91"), // SuiNS
         pubkey!("FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP"), // Nansen
         pubkey!("5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR"), // SNS Campaign
-        pubkey!("7siDgAEyXRCEhNjZcQ8VLVbMxXQaQY4hNcRbGbKj2i7u") // CFL 
+        pubkey!("452cMqDHe5cf1Z96HxUNaQjiLckhMiZdZ5abe7oQ2iRB"), // Endless Domains
+        pubkey!("8hmebGRQpZG8RpR3SFTfnuY2K4QgNxyAtqdhR9UuFksB"), // Coupon Vault
+        pubkey!("7siDgAEyXRCEhNjZcQ8VLVbMxXQaQY4hNcRbGbKj2i7u")  // CFL 
+
     ];
     /// Percentage of domain name creation cost trasnfered to the referrer if specified
     pub const REFERRER_FEES_PCT: u64 = 5;
@@ -93,8 +96,9 @@ pub mod constants {
         // Nansen
         "FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP" => (Some(20), 0, 1731636000, None, 0, 0),
         // SNS Campaign
-        "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR" => (Some(50), 1737266400, 1737608460, None, 0, 0)
-
+        "5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR" => (Some(50), 1737266400, 1737608460, None, 0, 0),
+        // Coupon Vault
+        "8hmebGRQpZG8RpR3SFTfnuY2K4QgNxyAtqdhR9UuFksB" => (None, 0, 0, Some(100), 0, u64::MAX),
     };
     // Fees taken for the reselling of domain names
     // | Tier | Percentage of payout    | Requirements   |
@@ -169,9 +173,9 @@ pub mod constants {
 #[cfg(not(feature = "no-entrypoint"))]
 solana_security_txt::security_txt! {
     name: env!("CARGO_PKG_NAME"),
-    project_url: "http://bonfida.org",
-    contacts: "email:security@bonfida.com,link:https://twitter.com/bonfida",
-    policy: "https://immunefi.com/bounty/bonfida",
+    project_url: "http://sns.id",
+    contacts: "email:contact@sns.id,link:https://x.com/sns",
+    policy: "https://immunefi.com/bounty/sns",
     preferred_languages: "en",
     auditors: "Halborn"
 }
