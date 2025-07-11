@@ -28,7 +28,7 @@ pub mod constants {
     pub const ROOT_DOMAIN_ACCOUNT: Pubkey = pubkey!("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx");
     pub const PYTH_MAPPING_ACCOUNT: Pubkey =
         pubkey!("AHtgzX45WTKfkPG53L6WYhGEXwQkN1BVknET3sVsLL8J");
-    pub const REFERRER_WHITELIST: [Pubkey; 15] = [
+    pub const REFERRER_WHITELIST: [Pubkey; 16] = [
         pubkey!("3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1"), // Test wallet
         pubkey!("DM1jJCkZZEwY5tmWbgvKRxsDFzXCdbfrYCCH1CtwguEs"), // 4Everland
         pubkey!("ADCp4QXFajHrhy4f43pD6GJFtQLkdBY2mjS9DfCk7tNW"), // Bandit network
@@ -44,6 +44,7 @@ pub mod constants {
         pubkey!("D5cLoAGjNTHKU1UGv2bYwbnyRoGTMe3sbpLtJW3fRq91"), // SuiNS
         pubkey!("FePcCmrr7vgjeFXcXtJHqShSXydaTrga2wfHRt9RrYvP"), // Nansen
         pubkey!("5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR"), // SNS Campaign
+        pubkey!("7siDgAEyXRCEhNjZcQ8VLVbMxXQaQY4hNcRbGbKj2i7u") // CFL 
     ];
     /// Percentage of domain name creation cost trasnfered to the referrer if specified
     pub const REFERRER_FEES_PCT: u64 = 5;
