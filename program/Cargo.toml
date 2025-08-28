@@ -3,6 +3,7 @@ name = "sns-registrar"
 version = "0.1.0"
 authors = ["ellttBen <elliott@bonfida.com>"]
 edition = "2018"
+repository = "https://github.com/SolanaNameService/sns-registrar"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
