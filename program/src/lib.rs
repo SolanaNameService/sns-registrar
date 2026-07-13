@@ -26,8 +26,8 @@ pub mod constants {
     pub const VAULT_OWNER: Pubkey = pubkey!("5D2zKog251d6KPCyFyLMt3KroWwXXPWSgTPyhV22K2gR");
 
     pub const ROOT_DOMAIN_ACCOUNT: Pubkey = pubkey!("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx");
-    pub const PYTH_MAPPING_ACCOUNT: Pubkey =
-        pubkey!("AHtgzX45WTKfkPG53L6WYhGEXwQkN1BVknET3sVsLL8J");
+    // pub const PYTH_MAPPING_ACCOUNT: Pubkey =
+    //     pubkey!("AHtgzX45WTKfkPG53L6WYhGEXwQkN1BVknET3sVsLL8J");
     pub const REFERRER_WHITELIST: [Pubkey; 18] = [
         pubkey!("3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1"), // Test wallet
         pubkey!("DM1jJCkZZEwY5tmWbgvKRxsDFzXCdbfrYCCH1CtwguEs"), // 4Everland
@@ -120,8 +120,8 @@ pub mod constants {
 
     pub const ROOT_DOMAIN_ACCOUNT: Pubkey = pubkey!("5eoDkP6vCQBXqDV9YN2NdUs3nmML3dMRNmEYpiyVNBm2");
     // Unused
-    pub const PYTH_MAPPING_ACCOUNT: Pubkey =
-        pubkey!("BmA9Z6FjioHJPpjT39QazZyhDRUdZy2ezwx4GiDdE2u2");
+    // pub const PYTH_MAPPING_ACCOUNT: Pubkey =
+    //     pubkey!("BmA9Z6FjioHJPpjT39QazZyhDRUdZy2ezwx4GiDdE2u2");
     pub const REFERRER_WHITELIST: [Pubkey; 5] = [
         pubkey!("3ogYncmMM5CmytsGCqKHydmXmKUZ6sGWvizkzqwT7zb1"), // Test wallet
         pubkey!("DM1jJCkZZEwY5tmWbgvKRxsDFzXCdbfrYCCH1CtwguEs"), // 4Everland
