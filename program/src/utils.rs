@@ -16,7 +16,7 @@ use solana_program::{
     program_pack::Pack, pubkey::Pubkey, sysvar::Sysvar,
 };
 
-use spl_name_service::state::{get_seeds_and_key, HASH_PREFIX};
+use spl_name_service::state::{HASH_PREFIX, get_seeds_and_key};
 use spl_token::state::Account;
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -147,7 +147,9 @@ pub fn get_token_usd_price_checked_v2(
     mint: &Pubkey,
 ) -> Result<u64, ProgramError> {
     let token = SupportedToken::from_mint(mint)?;
+
     check_account_key(pyth_feed, &token.price_feed_account_key())?;
+
     let token_price = bonfida_utils::pyth::get_oracle_price_fp32_v2(
         mint,
         pyth_feed,

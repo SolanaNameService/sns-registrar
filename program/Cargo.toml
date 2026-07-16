@@ -2,7 +2,7 @@
 name = "sns-registrar"
 version = "0.1.0"
 authors = ["ellttBen <elliott@bonfida.com>"]
-edition = "2018"
+edition = "2024"
 repository = "https://github.com/SolanaNameService/sns-registrar"
 description = "This on-chain Solana program handles SNS domain registrations"
 license = "MIT"
@@ -44,7 +44,9 @@ solana-program-test = { version = "4.1.2", features = ["agave-unstable-api"] }
 tokio = { version = "1.0", features = ["macros"] }
 futures = "0.3"
 solana-sdk = "4.0.1"
-spl-associated-token-account = "8.0.0"
+spl-associated-token-account = { version = "8.0.0", features = [
+    "no-entrypoint",
+] }
 random-string = "1.0.0"
 bytemuck = "1.13.0"
 serde = "1.0.198"

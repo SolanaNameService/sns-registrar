@@ -7,12 +7,17 @@
       url = "github:ellttben/solana-nix";
       # inputs.nixpkgs.follows = "nixpkgs";
     };
+    # fenix = {
+    #   url = "github:nix-community/fenix";
+    #   # inputs.nixpkgs.follows = "solana-nix";
+    # };
   };
 
   outputs =
     {
       self,
       # nixpkgs,
+      # fenix,
       solana-nix,
     }:
     let
@@ -33,6 +38,7 @@
           solana-nix.packages.x86_64-linux.solana-platform-tools
           solana-nix.packages.x86_64-linux.solana-cli
           solana-nix.packages.x86_64-linux.anchor-cli
+          # fenix.packages.x86_64-linux.default.toolchain
         ];
 
         nativeBuildInputs = [ pkgs.pkg-config ];

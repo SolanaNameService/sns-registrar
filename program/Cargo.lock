@@ -965,9 +965,9 @@ dependencies = [
 
 [[package]]
 name = "bonfida-macros"
-version = "0.9.0"
+version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "774e52035da0b995056938bc5ad93b42a7ab9b14170bb60abb0061eed1eebb67"
+checksum = "8d736270c6fa978bc364c2ece8feaec6d4205621638fe6d68eb8340dace7f0a9"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -8033,7 +8033,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "32497e9a4c7b38532efcdebeef879707aa9f794296a4f0244f6f69e9bc8574bd"
 dependencies = [
  "fastrand 2.4.1",
- "getrandom 0.4.3",
+ "getrandom 0.3.4",
  "once_cell",
  "rustix",
  "windows-sys 0.61.2",

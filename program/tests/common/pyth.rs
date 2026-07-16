@@ -1,7 +1,7 @@
 use std::{str::FromStr, time::UNIX_EPOCH};
 
 use base64::Engine;
-use bonfida_utils::pyth::{parse_price_v2, PRICE_FEED_DISCRIMATOR};
+use bonfida_utils::pyth::{PRICE_FEED_DISCRIMATOR, parse_price_v2};
 use borsh::BorshSerialize;
 use serde::{Deserialize, Serialize};
 use solana_sdk::{account::Account, pubkey::Pubkey};
@@ -41,7 +41,7 @@ pub struct PythAccounts {
     pub sol_product: (Account, Pubkey),
     pub sol_price: (Account, Pubkey),
     pub sol_feed_pull: (Account, Pubkey),
-    pub fida_feed_pull: (Account, Pubkey),
+    pub usdc_feed_pull: (Account, Pubkey),
 }
 
 pub struct Price {
@@ -56,19 +56,22 @@ pub fn load_pyth_accounts(adjust: bool) -> PythAccounts {
     let price = include_str!("../pyth/push/sol_price.json");
     let sol_feed_pull = include_str!("../pyth/pull/sol_feed_pull.json");
     let fida_feed_pull = include_str!("../pyth/pull/fida_feed_pull.json");
+    let usdc_feed_pull = include_str!("../pyth/pull/usdc_feed_pull.json");
 
     let mut sol_feed_pull = load_account(sol_feed_pull);
     let mut fida_feed_pull = load_account(fida_feed_pull);
+    let mut usdc_feed_pull = load_account(usdc_feed_pull);
     if adjust {
         sol_feed_pull.0.data = adjust_time(&mut sol_feed_pull.0.data);
         fida_feed_pull.0.data = adjust_time(&mut fida_feed_pull.0.data);
+        usdc_feed_pull.0.data = adjust_time(&mut usdc_feed_pull.0.data);
     }
 
     PythAccounts {
         sol_price: load_account(price),
         sol_product: load_account(product),
         sol_feed_pull,
-        fida_feed_pull,
+        usdc_feed_pull,
     }
 }
 
