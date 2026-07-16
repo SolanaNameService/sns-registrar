@@ -62,7 +62,7 @@ async fn test_state() {
             buyer_token_source: &bob.get_ata(&mint),
             pyth_product_acc: &Pubkey::default(),
             pyth_price_acc: &Pubkey::default(),
-            pyth_mapping_acc: &pyth_accounts.fida_feed_pull.1,
+            pyth_mapping_acc: &pyth_accounts.usdc_feed_pull.1,
             spl_token_program: &spl_token::ID,
             referrer_account_opt: Some(&referrer_ata),
             vault: &vault,
@@ -88,13 +88,13 @@ async fn test_state() {
     // Verify state
     let vault_acc = get_vault(&mut ctx, &vault).await;
     let referrer_ata = get_vault(&mut ctx, &referrer_ata).await;
-    let fida_usd_price_fp32 = parse_price_feed_fp32(pyth_accounts.fida_feed_pull.0, 6, 6);
-    let fida_price = (usd_price << 32) / fida_usd_price_fp32;
-    let fida_price = (fida_price * 95) / 100;
-    let fida_price = (fida_price * (100 - discount)) / 100;
-    let ref_fees = fida_price * fee / 100;
+    let usdc_price_fp32 = parse_price_feed_fp32(pyth_accounts.usdc_feed_pull.0, 6, 6);
+    let usdc_price = (usd_price << 32) / usdc_price_fp32;
+    let usdc_price = (usdc_price * 95) / 100;
+    let usdc_price = (usdc_price * (100 - discount)) / 100;
+    let ref_fees = usdc_price * fee / 100;
     expected_ref_fees += ref_fees;
-    expected_vault_amount += fida_price - ref_fees;
+    expected_vault_amount += usdc_price - ref_fees;
 
     assert_eq!(vault_acc.amount, expected_vault_amount);
     assert_eq!(referrer_ata.amount, expected_ref_fees);

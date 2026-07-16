@@ -1,12 +1,12 @@
 //! Create a domain name and buy the ownership of a domain name
 
 use bonfida_utils::{
-    checks::{check_account_key, check_account_owner, check_signer},
     BorshSize, InstructionsAccount,
+    checks::{check_account_key, check_account_owner, check_signer},
 };
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::{
-    account_info::{next_account_info, AccountInfo},
+    account_info::{AccountInfo, next_account_info},
     entrypoint::ProgramResult,
     msg,
     program::invoke,
@@ -17,18 +17,17 @@ use solana_program::{
     sysvar,
     sysvar::Sysvar,
 };
-use spl_name_service::state::{get_seeds_and_key, NameRecordHeader};
+use spl_name_service::state::{NameRecordHeader, get_seeds_and_key};
 use spl_token::instruction::transfer;
 
 use crate::{
-    central_state,
+    Error, central_state,
     constants::{FIDA_MINT, REFERRER_FEES_PCT, REFERRER_WHITELIST, ROOT_DOMAIN_ACCOUNT},
     cpi::Cpi,
     utils::{
         check_vault_token_account_owner, get_domain_price_checked, get_hashed_name, get_name_key,
         get_special_discount_and_fee,
     },
-    Error,
 };
 
 #[derive(BorshDeserialize, BorshSerialize, BorshSize, Debug)]
@@ -279,6 +278,7 @@ pub fn create<'a, 'b: 'a>(
     // Create domain name
     let rent = Rent::get()?;
     let hashed_name = get_hashed_name(&params.name);
+
     Cpi::create_name_account(
         accounts.naming_service_program,
         accounts.system_program,

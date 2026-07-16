@@ -1,4 +1,3 @@
-use borsh::BorshSerialize;
 use sns_registrar::{
     constants::{ROOT_DOMAIN_ACCOUNT, TOKENS_SYM_MINT_DECIMALS, VAULT_OWNER},
     instruction_auto::{create, create_split_v2},
@@ -7,7 +6,7 @@ use sns_registrar::{
 };
 
 use solana_program::{program_pack::Pack, pubkey::Pubkey, sysvar};
-use solana_program_test::{processor, ProgramTest};
+use solana_program_test::{ProgramTest, processor};
 use solana_sdk::{
     account::Account,
     program_option::COption,
@@ -59,7 +58,7 @@ async fn test_state() {
             buyer_token_source: &bob.get_ata(&mint),
             pyth_product_acc: &Pubkey::default(),
             pyth_price_acc: &Pubkey::default(),
-            pyth_mapping_acc: &pyth_accounts.fida_feed_pull.1,
+            pyth_mapping_acc: &pyth_accounts.usdc_feed_pull.1,
             spl_token_program: &spl_token::ID,
             referrer_account_opt: None,
             vault: &vault,
@@ -79,7 +78,7 @@ async fn test_state() {
 
     // Verify state
     let vault_acc = get_vault(&mut ctx, &vault).await;
-    let fida_usd_price = parse_price_feed_fp32(pyth_accounts.fida_feed_pull.0, 6, 6);
+    let fida_usd_price = parse_price_feed_fp32(pyth_accounts.usdc_feed_pull.0, 6, 6);
     let fida_price = (usd_price << 32) / fida_usd_price;
     expected_vault_amount += (fida_price * 95) / 100;
     assert_eq!(vault_acc.amount, expected_vault_amount);

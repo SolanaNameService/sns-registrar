@@ -9,7 +9,7 @@ use sns_registrar::{
     utils::get_name_key,
 };
 use solana_program::{program_option::COption, program_pack::Pack, pubkey::Pubkey};
-use solana_program_test::{processor, ProgramTest, ProgramTestContext};
+use solana_program_test::{ProgramTest, ProgramTestContext, processor};
 use solana_sdk::{
     account::Account,
     clock::Clock,
@@ -126,7 +126,7 @@ impl<'a> TestContext {
         );
 
         let mint_authority = Keypair::new();
-        let mint = TOKENS_SYM_MINT_DECIMALS.get("FIDA").unwrap().0;
+        let mint = TOKENS_SYM_MINT_DECIMALS.get("USDC").unwrap().0;
         let mut mint_data = vec![0u8; Mint::LEN];
         Mint {
             mint_authority: COption::Some(mint_authority.pubkey()),
@@ -349,8 +349,8 @@ impl<'a> TestContext {
             pyth_accounts.sol_feed_pull.0.clone(),
         );
         program_test.add_account(
-            pyth_accounts.fida_feed_pull.1,
-            pyth_accounts.fida_feed_pull.0.clone(),
+            pyth_accounts.usdc_feed_pull.1,
+            pyth_accounts.usdc_feed_pull.0.clone(),
         );
 
         let clock: Clock = Clock {

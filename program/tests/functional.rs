@@ -19,14 +19,14 @@ use solana_program::{
     pubkey::Pubkey,
     sysvar::{self},
 };
-use solana_program_test::{processor, ProgramTest};
+use solana_program_test::{ProgramTest, processor};
 use solana_sdk::{
     account::Account,
     signature::{Keypair, Signer},
 };
 use spl_name_service::{
     instruction::NameRegistryInstruction,
-    state::{get_seeds_and_key, HASH_PREFIX},
+    state::{HASH_PREFIX, get_seeds_and_key},
 };
 use spl_token::{instruction::mint_to, state::Mint};
 
@@ -61,7 +61,7 @@ async fn test_functional_0() {
     );
 
     let mint_authority = Keypair::new();
-    let mint = TOKENS_SYM_MINT_DECIMALS.get("FIDA").unwrap().0;
+    let mint = TOKENS_SYM_MINT_DECIMALS.get("USDC").unwrap().0;
     let mut mint_data = vec![0u8; Mint::LEN];
     Mint {
         mint_authority: COption::Some(mint_authority.pubkey()),
@@ -139,13 +139,13 @@ async fn test_functional_0() {
         sol_feed_pull,
         sol_price,
         sol_product,
-        fida_feed_pull,
+        usdc_feed_pull,
     } = common::pyth::load_pyth_accounts(true);
 
     program_test.add_account(sol_feed_pull.1, sol_feed_pull.0);
     program_test.add_account(sol_price.1, sol_price.0);
     program_test.add_account(sol_product.1, sol_product.0);
-    program_test.add_account(fida_feed_pull.1, fida_feed_pull.0);
+    program_test.add_account(usdc_feed_pull.1, usdc_feed_pull.0);
 
     let mut ctx = program_test.start_with_context().await;
     let payer_pubkey = ctx.payer.pubkey();
@@ -227,7 +227,7 @@ async fn test_functional_0() {
             central_state: &derived_central_state_key,
             buyer: &payer_pubkey,
             buyer_token_source: &buyer_token_source,
-            pyth_mapping_acc: &fida_feed_pull.1,
+            pyth_mapping_acc: &usdc_feed_pull.1,
             //Pyth account derivation is tested in bo&nfida pyth utils //TODO
             pyth_product_acc: &Pubkey::default(),
             pyth_price_acc: &Pubkey::default(),
