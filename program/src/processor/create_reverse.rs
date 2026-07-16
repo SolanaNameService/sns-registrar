@@ -19,7 +19,7 @@ use solana_program::{
     program_error::ProgramError,
     program_pack::Pack,
     pubkey::Pubkey,
-    system_program, sysvar,
+    sysvar,
 };
 use spl_name_service::state::{get_seeds_and_key, NameRecordHeader};
 
@@ -84,12 +84,20 @@ impl<'a, 'b: 'a> Accounts<'a, AccountInfo<'b>> {
         // Check keys
         check_account_key(accounts.naming_service_program, &spl_name_service::id()).unwrap();
         check_account_key(accounts.root_domain, &ROOT_DOMAIN_ACCOUNT).unwrap();
-        check_account_key(accounts.system_program, &system_program::id()).unwrap();
+        check_account_key(
+            accounts.system_program,
+            &solana_system_interface::program::ID,
+        )
+        .unwrap();
         check_account_key(accounts.central_state, &central_state::KEY).unwrap();
         check_account_key(accounts.rent_sysvar, &sysvar::rent::id()).unwrap();
 
         // Check owners
-        check_account_owner(accounts.reverse_lookup, &system_program::ID).unwrap();
+        check_account_owner(
+            accounts.reverse_lookup,
+            &solana_system_interface::program::ID,
+        )
+        .unwrap();
 
         // Check signer
         check_signer(accounts.fee_payer).unwrap();

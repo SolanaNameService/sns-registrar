@@ -15,7 +15,6 @@ use {
         msg,
         program_error::ProgramError,
         pubkey::Pubkey,
-        system_program,
     },
     spl_name_service::instruction::delete,
 };
@@ -64,7 +63,10 @@ impl<'a, 'b: 'a> Accounts<'a, AccountInfo<'b>> {
 
         // Check keys
         check_account_key(accounts.name_service_id, &spl_name_service::ID)?;
-        check_account_key(accounts.system_program, &system_program::ID)?;
+        check_account_key(
+            accounts.system_program,
+            &solana_system_interface::program::ID,
+        )?;
         check_account_key(accounts.central_state, &central_state::KEY)?;
 
         // Check ownership
@@ -72,9 +74,12 @@ impl<'a, 'b: 'a> Accounts<'a, AccountInfo<'b>> {
             .or_else(|_| check_account_owner(accounts.domain, program_id))?;
         check_account_owner(accounts.reverse, &spl_name_service::ID)
             .or_else(|_| check_account_owner(accounts.reverse, program_id))?;
-        check_account_owner(accounts.reselling_state, &system_program::id())
-            .or_else(|_| check_account_owner(accounts.reselling_state, program_id))?;
-        check_account_owner(accounts.state, &system_program::id())
+        check_account_owner(
+            accounts.reselling_state,
+            &solana_system_interface::program::id(),
+        )
+        .or_else(|_| check_account_owner(accounts.reselling_state, program_id))?;
+        check_account_owner(accounts.state, &solana_system_interface::program::id())
             .or_else(|_| check_account_owner(accounts.state, program_id))?;
 
         // Check signer

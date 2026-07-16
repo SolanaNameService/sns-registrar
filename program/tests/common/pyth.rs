@@ -38,7 +38,6 @@ fn load_account(data: &str) -> (Account, Pubkey) {
 }
 
 pub struct PythAccounts {
-    pub mapping: (Account, Pubkey),
     pub sol_product: (Account, Pubkey),
     pub sol_price: (Account, Pubkey),
     pub sol_feed_pull: (Account, Pubkey),
@@ -53,7 +52,6 @@ pub struct Price {
 }
 
 pub fn load_pyth_accounts(adjust: bool) -> PythAccounts {
-    let mapping = include_str!("../pyth/push/pyth_mapping.json");
     let product = include_str!("../pyth/push/sol_product.json");
     let price = include_str!("../pyth/push/sol_price.json");
     let sol_feed_pull = include_str!("../pyth/pull/sol_feed_pull.json");
@@ -67,7 +65,6 @@ pub fn load_pyth_accounts(adjust: bool) -> PythAccounts {
     }
 
     PythAccounts {
-        mapping: load_account(mapping),
         sol_price: load_account(price),
         sol_product: load_account(product),
         sol_feed_pull,

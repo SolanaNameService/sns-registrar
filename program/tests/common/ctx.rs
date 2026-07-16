@@ -85,7 +85,11 @@ impl<'a> TestContext {
             processor!(spl_name_service::processor::Processor::process_instruction),
         );
 
-        program_test.add_program("mpl_token_metadata", mpl_token_metadata::ID, None);
+        program_test.add_program(
+            "mpl_token_metadata",
+            sns_registrar::constants::MPL_TOKEN_METADATA_PROGRAM,
+            None,
+        );
         let (derived_central_state_key, _) =
             Pubkey::find_program_address(&[&program_id.to_bytes()], &program_id);
         program_test.add_account(
@@ -179,12 +183,11 @@ impl<'a> TestContext {
             },
         );
 
-        let root_domain_data = spl_name_service::state::NameRecordHeader {
+        let root_domain_data = borsh::to_vec(&spl_name_service::state::NameRecordHeader {
             parent_name: Pubkey::default(),
             owner: derived_central_state_key,
             class: Pubkey::default(),
-        }
-        .try_to_vec()
+        })
         .unwrap();
 
         program_test.add_account(
@@ -199,12 +202,11 @@ impl<'a> TestContext {
 
         // Create .sol domain without reverse
         let name_without_rev = get_name_key("no_rev", None).unwrap();
-        let name_data = spl_name_service::state::NameRecordHeader {
+        let name_data = borsh::to_vec(&spl_name_service::state::NameRecordHeader {
             parent_name: ROOT_DOMAIN_ACCOUNT,
             owner: bob.keypair.pubkey(),
             class: Pubkey::default(),
-        }
-        .try_to_vec()
+        })
         .unwrap();
         program_test.add_account(
             name_without_rev,
@@ -217,13 +219,13 @@ impl<'a> TestContext {
         );
 
         // Add mock NFT & collection & Master edition
-        let data = super::nft::get_metadata().try_to_vec().unwrap();
+        let data = borsh::to_vec(&super::nft::get_metadata()).unwrap();
         let padding = vec![0u8; MAX_METADATA_LEN - data.len()];
         let data = [data, padding].concat();
         program_test.add_account(
             super::nft::NFT_METADATA_KEY,
             Account {
-                owner: mpl_token_metadata::ID,
+                owner: sns_registrar::constants::MPL_TOKEN_METADATA_PROGRAM,
                 lamports: 100_000_000_000,
                 data,
                 ..Account::default()
@@ -238,7 +240,7 @@ impl<'a> TestContext {
         program_test.add_account(
             super::nft::MASTER_EDITION,
             Account {
-                owner: mpl_token_metadata::ID,
+                owner: sns_registrar::constants::MPL_TOKEN_METADATA_PROGRAM,
                 lamports: 100_000_000_000,
                 data,
                 ..Account::default()
@@ -327,7 +329,7 @@ impl<'a> TestContext {
             Account {
                 lamports: 1_000_000,
                 data,
-                owner: mpl_token_metadata::ID,
+                owner: sns_registrar::constants::MPL_TOKEN_METADATA_PROGRAM,
                 executable: false,
                 ..Account::default()
             },
@@ -336,7 +338,7 @@ impl<'a> TestContext {
         // Load Pyth accounts
         let pyth_accounts = super::pyth::load_pyth_accounts(true);
 
-        program_test.add_account(pyth_accounts.mapping.1, pyth_accounts.mapping.0.clone());
+        // program_test.add_account(pyth_accounts.mapping.1, pyth_accounts.mapping.0.clone());
         program_test.add_account(pyth_accounts.sol_price.1, pyth_accounts.sol_price.0.clone());
         program_test.add_account(
             pyth_accounts.sol_product.1,

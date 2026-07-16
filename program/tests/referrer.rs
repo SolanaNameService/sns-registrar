@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use sns_registrar::{constants::ROOT_DOMAIN_ACCOUNT, instruction_auto::create, processor::create};
 
-use solana_program::{pubkey::Pubkey, system_program, sysvar};
+use solana_program::{pubkey::Pubkey, sysvar};
 use solana_sdk::signature::Signer;
 use spl_associated_token_account::{
     get_associated_token_address, instruction::create_associated_token_account,
@@ -56,7 +56,7 @@ async fn test_state() {
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             reverse_lookup: &reverse_key,
             name: &domain_key,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             central_state: &sns_registrar::central_state::KEY,
             buyer: &bob.keypair.pubkey(),
             buyer_token_source: &bob.get_ata(&mint),

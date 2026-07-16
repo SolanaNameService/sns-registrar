@@ -2,7 +2,7 @@ use std::convert::TryInto;
 use std::str::FromStr;
 
 use bonfida_utils::pyth::parse_price_v2;
-use pyth_solana_receiver_sdk::price_update::PriceFeedMessage;
+use bonfida_utils::pyth::utils::PriceFeedMessage;
 use solana_program::clock::Clock;
 use solana_program::instruction::Instruction;
 use solana_program::program_pack::Pack;

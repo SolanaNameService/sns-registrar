@@ -1,5 +1,4 @@
 use crate::state::ReverseLookup;
-use borsh::BorshSerialize;
 use solana_program::{
     account_info::AccountInfo,
     entrypoint::ProgramResult,
@@ -7,8 +6,7 @@ use solana_program::{
     program_pack::Pack,
     pubkey::Pubkey,
     rent::Rent,
-    system_instruction,
-    sysvar::Sysvar,
+    sysvar::{Sysvar, SysvarSerialize},
 };
 
 use spl_name_service::{instruction::NameRegistryInstruction, state::NameRecordHeader};
@@ -27,7 +25,7 @@ impl Cpi {
         let rent = Rent::get()?.minimum_balance(space);
         let account_lamports = account_to_create.lamports();
         if account_lamports != 0 && account_to_create.data_is_empty() {
-            let defund_created_account = system_instruction::transfer(
+            let defund_created_account = solana_system_interface::instruction::transfer(
                 account_to_create.key,
                 fee_payer.key,
                 account_lamports,
@@ -43,7 +41,7 @@ impl Cpi {
             )?;
         }
 
-        let create_state_instruction = system_instruction::create_account(
+        let create_state_instruction = solana_system_interface::instruction::create_account(
             fee_payer.key,
             account_to_create.key,
             rent,
@@ -120,7 +118,7 @@ impl Cpi {
         parent_name_opt: Option<&AccountInfo<'a>>,
         parent_name_owner_opt: Option<&AccountInfo<'a>>,
     ) -> ProgramResult {
-        let name_bytes = ReverseLookup { name }.try_to_vec().unwrap();
+        let name_bytes = borsh::to_vec(&ReverseLookup { name }).unwrap();
         let rent = Rent::from_account_info(rent_sysvar_account)?;
         let lamports = rent.minimum_balance(name_bytes.len() + NameRecordHeader::LEN);
 

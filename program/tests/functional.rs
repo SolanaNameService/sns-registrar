@@ -1,9 +1,8 @@
-use borsh::BorshSerialize;
 use common::ctx::TestContext;
 use common::pyth::PythAccounts;
 use common::utils::{create_and_get_associated_token_address, random_string};
-use mpl_token_metadata::accounts::MasterEdition;
 use sns_registrar::instruction_auto::create_with_nft;
+use sns_registrar::mpl_token_metadata::MasterEdition;
 use sns_registrar::processor::create_with_nft;
 use sns_registrar::{
     central_state,
@@ -18,7 +17,6 @@ use solana_program::{
     program_option::COption,
     program_pack::Pack,
     pubkey::Pubkey,
-    system_program,
     sysvar::{self},
 };
 use solana_program_test::{processor, ProgramTest};
@@ -119,12 +117,11 @@ async fn test_functional_0() {
         },
     );
 
-    let root_domain_data = spl_name_service::state::NameRecordHeader {
+    let root_domain_data = borsh::to_vec(&spl_name_service::state::NameRecordHeader {
         parent_name: Pubkey::default(),
         owner: derived_central_state_key,
         class: Pubkey::default(),
-    }
-    .try_to_vec()
+    })
     .unwrap();
 
     program_test.add_account(
@@ -139,14 +136,12 @@ async fn test_functional_0() {
 
     // Load Pyth accounts
     let PythAccounts {
-        mapping,
         sol_feed_pull,
         sol_price,
         sol_product,
         fida_feed_pull,
     } = common::pyth::load_pyth_accounts(true);
 
-    program_test.add_account(mapping.1, mapping.0);
     program_test.add_account(sol_feed_pull.1, sol_feed_pull.0);
     program_test.add_account(sol_price.1, sol_price.0);
     program_test.add_account(sol_product.1, sol_product.0);
@@ -183,7 +178,7 @@ async fn test_functional_0() {
             naming_service_program: &spl_name_service::ID,
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             reverse_lookup: &reverse_lookup_account_key,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             central_state: &derived_central_state_key,
             fee_payer: &payer_pubkey,
             parent_name: None,
@@ -228,7 +223,7 @@ async fn test_functional_0() {
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             name: &name_account_key,
             reverse_lookup: &reverse_lookup_account_key,
-            system_program: &system_program::id(),
+            system_program: &solana_system_interface::program::ID,
             central_state: &derived_central_state_key,
             buyer: &payer_pubkey,
             buyer_token_source: &buyer_token_source,
@@ -301,7 +296,7 @@ async fn test_functional_0() {
             naming_service_program: &spl_name_service::ID,
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             reverse_lookup: &sub_reverse,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             central_state: &sns_registrar::central_state::KEY,
             fee_payer: &ctx.payer.pubkey(),
             rent_sysvar: &sysvar::rent::ID,
@@ -319,7 +314,7 @@ async fn test_functional_0() {
         program_id,
         delete::Accounts {
             name_service_id: &spl_name_service::ID,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             domain: &name_account_key,
             reverse: &reverse_lookup_account_key,
             reselling_state: &derived_reselling_state_key,
@@ -361,7 +356,7 @@ async fn test_functional_2() {
             rent_sysvar: &sysvar::rent::ID,
             name: &domain_key,
             reverse_lookup: &reverse_key,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             central_state: &sns_registrar::central_state::KEY,
             buyer: &bob.keypair.pubkey(),
             nft_source: &bob.get_ata(&common::nft::NFT_MINT),
@@ -371,7 +366,7 @@ async fn test_functional_2() {
             state: &Pubkey::find_program_address(&[&domain_key.to_bytes()], &sns_registrar::ID).0,
             nft_mint: &common::nft::NFT_MINT,
             master_edition: &MasterEdition::find_pda(&common::nft::NFT_MINT).0,
-            mpl_token_metadata: &mpl_token_metadata::ID,
+            mpl_token_metadata: &sns_registrar::constants::MPL_TOKEN_METADATA_PROGRAM,
         },
         create_with_nft::Params {
             name: domain,

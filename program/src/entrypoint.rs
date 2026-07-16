@@ -1,7 +1,7 @@
 use num_traits::FromPrimitive;
 use solana_program::{
-    account_info::AccountInfo, decode_error::DecodeError, entrypoint::ProgramResult, msg,
-    program_error::PrintProgramError, pubkey::Pubkey,
+    account_info::AccountInfo, entrypoint::ProgramResult, msg, program_error::ProgramError,
+    pubkey::Pubkey,
 };
 
 use crate::{error::Error, processor::Processor};
@@ -18,28 +18,33 @@ pub fn process_instruction(
 ) -> ProgramResult {
     msg!("Entrypoint");
     if let Err(error) = Processor::process_instruction(program_id, accounts, instruction_data) {
-        error.print::<Error>();
+        match &error {
+            ProgramError::Custom(error_id) => {
+                msg!("Error: {}", crate::Error::from_u32(*error_id).unwrap())
+            }
+            error => msg!("Error: {}", error),
+        }
         return Err(error);
     }
     Ok(())
 }
 
-impl PrintProgramError for Error {
-    fn print<E>(&self)
-    where
-        E: 'static + std::error::Error + DecodeError<E> + PrintProgramError + FromPrimitive,
-    {
-        match self {
-            Error::Overflow => {
-                msg!("Error: Numerical overflow")
-            }
-            Error::WrongCollection => msg!("Error: Wrong collection"),
-            Error::AlreadyRegistered => {
-                msg!("Error: The domain name is already registered")
-            }
-            Error::DeprecatedInstruction => {
-                msg!("Error: The instruction is deprecated")
-            }
-        }
-    }
-}
+// impl PrintProgramError for Error {
+//     fn print<E>(&self)
+//     where
+//         E: 'static + std::error::Error + DecodeError<E> + PrintProgramError + FromPrimitive,
+//     {
+//         match self {
+//             Error::Overflow => {
+//                 msg!("Error: Numerical overflow")
+//             }
+//             Error::WrongCollection => msg!("Error: Wrong collection"),
+//             Error::AlreadyRegistered => {
+//                 msg!("Error: The domain name is already registered")
+//             }
+//             Error::DeprecatedInstruction => {
+//                 msg!("Error: The instruction is deprecated")
+//             }
+//         }
+//     }
+// }

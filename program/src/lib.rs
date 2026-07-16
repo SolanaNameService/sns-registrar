@@ -4,6 +4,7 @@ pub mod cpi;
 pub mod entrypoint;
 pub mod error;
 pub mod instruction_auto;
+pub mod mpl_token_metadata;
 pub mod processor;
 pub mod state;
 pub mod utils;
@@ -20,6 +21,9 @@ declare_id_with_central_state!("snshBoEQ9jx4QoHBpZDQPYdNCtw7RMxJvYrKFEhwaPJ");
 pub mod constants {
     use phf::phf_map;
     use solana_program::{pubkey, pubkey::Pubkey};
+
+    pub const MPL_TOKEN_METADATA_PROGRAM: Pubkey =
+        pubkey!("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
 
     pub const VAULT_OWNER_DEPRECATED: Pubkey =
         pubkey!("GcWEQ9K78FV7LEHteFVciYApERk5YvQuFDQPk1yYJVXi");
@@ -113,6 +117,9 @@ pub mod constants {
 pub mod constants {
     use phf::phf_map;
     use solana_program::{pubkey, pubkey::Pubkey};
+
+    pub const MPL_TOKEN_METADATA_PROGRAM: Pubkey =
+        pubkey!("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s");
 
     pub const VAULT_OWNER_DEPRECATED: Pubkey =
         pubkey!("SNSaTJbEv2iT3CUrCQYa9zpGjbBVWhFCPaSJHkaJX34");
