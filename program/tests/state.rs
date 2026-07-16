@@ -6,7 +6,7 @@ use sns_registrar::{
     utils::get_reverse_key,
 };
 
-use solana_program::{program_pack::Pack, pubkey::Pubkey, system_program, sysvar};
+use solana_program::{program_pack::Pack, pubkey::Pubkey, sysvar};
 use solana_program_test::{processor, ProgramTest};
 use solana_sdk::{
     account::Account,
@@ -53,7 +53,7 @@ async fn test_state() {
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             reverse_lookup: &reverse_key,
             name: &domain_key,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             central_state: &sns_registrar::central_state::KEY,
             buyer: &bob.keypair.pubkey(),
             buyer_token_source: &bob.get_ata(&mint),
@@ -95,7 +95,7 @@ async fn test_state() {
             central_state: &sns_registrar::central_state::KEY,
             parent_name: None,
             parent_name_owner: None,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             fee_payer: &bob.keypair.pubkey(),
             reverse_lookup: &reverse_look_up,
             rent_sysvar: &sysvar::rent::ID,
@@ -168,7 +168,7 @@ async fn test_state() {
             naming_service_program: &spl_name_service::ID,
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             reverse_lookup: &sub_reverse,
-            system_program: &system_program::ID,
+            system_program: &solana_system_interface::program::ID,
             central_state: &sns_registrar::central_state::KEY,
             fee_payer: &ctx.payer.pubkey(),
             rent_sysvar: &sysvar::rent::ID,
@@ -212,25 +212,22 @@ async fn test_state_create_split_v1_and_v2() {
 
     // Load Pyth accounts
     let PythAccounts {
-        mapping,
         sol_feed_pull,
         sol_price,
         sol_product,
         ..
     } = common::pyth::load_pyth_accounts(true);
 
-    program_test.add_account(mapping.1, mapping.0);
     program_test.add_account(sol_feed_pull.1, sol_feed_pull.0);
     program_test.add_account(sol_price.1, sol_price.0);
     program_test.add_account(sol_product.1, sol_product.0);
 
     // Set up root account
-    let root_domain_data = spl_name_service::state::NameRecordHeader {
+    let root_domain_data = borsh::to_vec(&spl_name_service::state::NameRecordHeader {
         parent_name: Pubkey::default(),
         owner: sns_registrar::central_state::KEY,
         class: Pubkey::default(),
-    }
-    .try_to_vec()
+    })
     .unwrap();
 
     program_test.add_account(
@@ -318,7 +315,7 @@ async fn test_state_create_split_v1_and_v2() {
             root_domain: &ROOT_DOMAIN_ACCOUNT,
             name: &domain_key,
             reverse_lookup: &reverse_look_up,
-            system_program: &system_program::id(),
+            system_program: &solana_system_interface::program::ID,
             central_state: &sns_registrar::central_state::KEY,
             buyer: &alice.pubkey(),
             buyer_token_source: &alice_sol_ata,

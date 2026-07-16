@@ -4,21 +4,20 @@ use std::convert::TryFrom;
 
 use crate::{
     central_state,
-    constants::{ROOT_DOMAIN_ACCOUNT, WOLVES_COLLECTION, WOLVES_COLLECTION_METADATA},
+    constants::{
+        MPL_TOKEN_METADATA_PROGRAM, ROOT_DOMAIN_ACCOUNT, WOLVES_COLLECTION,
+        WOLVES_COLLECTION_METADATA,
+    },
     cpi::Cpi,
     error::Error,
-    utils::get_hashed_name,
-    utils::get_name_key,
+    mpl_token_metadata::{BurnNftCpi, BurnNftCpiAccounts, MasterEdition, Metadata},
+    utils::{get_hashed_name, get_name_key},
 };
 use bonfida_utils::{
     checks::{check_account_key, check_account_owner, check_signer},
     BorshSize, InstructionsAccount,
 };
 use borsh::{BorshDeserialize, BorshSerialize};
-use mpl_token_metadata::{
-    accounts::{MasterEdition, Metadata},
-    instructions::{BurnNftCpi, BurnNftCpiAccounts},
-};
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -27,7 +26,7 @@ use solana_program::{
     program_pack::Pack,
     pubkey::Pubkey,
     rent::Rent,
-    system_program, sysvar,
+    sysvar,
     sysvar::Sysvar,
 };
 use spl_name_service::state::{get_seeds_and_key, NameRecordHeader};
@@ -112,22 +111,26 @@ impl<'a, 'b: 'a> Accounts<'a, AccountInfo<'b>> {
         // Check keys
         check_account_key(accounts.naming_service_program, &spl_name_service::ID).unwrap();
         check_account_key(accounts.root_domain, &ROOT_DOMAIN_ACCOUNT).unwrap();
-        check_account_key(accounts.system_program, &system_program::ID).unwrap();
+        check_account_key(
+            accounts.system_program,
+            &solana_system_interface::program::ID,
+        )
+        .unwrap();
         check_account_key(accounts.central_state, &central_state::KEY).unwrap();
         check_account_key(accounts.collection_metadata, &WOLVES_COLLECTION_METADATA).unwrap();
         check_account_key(accounts.spl_token_program, &spl_token::ID).unwrap();
         check_account_key(accounts.rent_sysvar, &sysvar::rent::ID).unwrap();
-        check_account_key(accounts.mpl_token_metadata, &mpl_token_metadata::ID).unwrap();
+        check_account_key(accounts.mpl_token_metadata, &MPL_TOKEN_METADATA_PROGRAM).unwrap();
 
         // Check ownership
-        check_account_owner(accounts.name, &system_program::ID)
+        check_account_owner(accounts.name, &solana_system_interface::program::ID)
             .map_err(|_| crate::Error::AlreadyRegistered)?;
-        check_account_owner(accounts.state, &system_program::ID).unwrap();
+        check_account_owner(accounts.state, &solana_system_interface::program::ID).unwrap();
         check_account_owner(accounts.nft_source, &spl_token::ID).unwrap();
-        check_account_owner(accounts.nft_metadata, &mpl_token_metadata::ID).unwrap();
+        check_account_owner(accounts.nft_metadata, &MPL_TOKEN_METADATA_PROGRAM).unwrap();
         check_account_owner(accounts.nft_mint, &spl_token::ID).unwrap();
-        check_account_owner(accounts.master_edition, &mpl_token_metadata::ID).unwrap();
-        check_account_owner(accounts.collection_metadata, &mpl_token_metadata::ID).unwrap();
+        check_account_owner(accounts.master_edition, &MPL_TOKEN_METADATA_PROGRAM).unwrap();
+        check_account_owner(accounts.collection_metadata, &MPL_TOKEN_METADATA_PROGRAM).unwrap();
 
         // Check signer
         check_signer(accounts.buyer).unwrap();

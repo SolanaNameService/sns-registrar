@@ -1,5 +1,4 @@
-use mpl_token_metadata::accounts::{MasterEdition, Metadata};
-use mpl_token_metadata::types::{Collection, Key};
+use sns_registrar::mpl_token_metadata::{Collection, Key, MasterEdition, Metadata, TokenStandard};
 use solana_program::program_option::COption;
 use {
     solana_program::{pubkey, pubkey::Pubkey},
@@ -22,7 +21,7 @@ pub fn get_metadata() -> Metadata {
         primary_sale_happened: true,
         is_mutable: true,
         edition_nonce: None,
-        token_standard: Some(mpl_token_metadata::types::TokenStandard::NonFungible),
+        token_standard: Some(TokenStandard::NonFungible),
         collection: Some(Collection {
             key: COLLECTION_KEY,
             verified: true,
@@ -67,7 +66,7 @@ pub fn get_collection() -> Metadata {
         primary_sale_happened: false,
         is_mutable: true,
         edition_nonce: None,
-        token_standard: Some(mpl_token_metadata::types::TokenStandard::NonFungible),
+        token_standard: Some(TokenStandard::NonFungible),
         collection: None,
         uses: None,
         collection_details: None,
@@ -82,7 +81,8 @@ pub fn get_collection() -> Metadata {
 
 #[cfg(test)]
 mod test {
-    use mpl_token_metadata::accounts::MasterEdition;
+
+    use sns_registrar::mpl_token_metadata::MasterEdition;
 
     use super::NFT_MINT;
 

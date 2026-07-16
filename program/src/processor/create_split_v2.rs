@@ -14,7 +14,7 @@ use solana_program::{
     program_pack::Pack,
     pubkey::Pubkey,
     rent::Rent,
-    system_program, sysvar,
+    sysvar,
     sysvar::Sysvar,
 };
 use spl_name_service::state::{get_seeds_and_key, NameRecordHeader};
@@ -114,16 +114,16 @@ impl<'a, 'b: 'a> Accounts<'a, AccountInfo<'b>> {
         // Check keys
         check_account_key(self.naming_service_program, &spl_name_service::ID).unwrap();
         check_account_key(self.root_domain, &ROOT_DOMAIN_ACCOUNT).unwrap();
-        check_account_key(self.system_program, &system_program::ID).unwrap();
+        check_account_key(self.system_program, &solana_system_interface::program::ID).unwrap();
         check_account_key(self.central_state, &central_state::KEY).unwrap();
         check_account_key(self.spl_token_program, &spl_token::ID).unwrap();
         check_account_key(self.rent_sysvar, &sysvar::rent::ID).unwrap();
 
         // Check ownership
-        check_account_owner(self.name, &system_program::ID)
+        check_account_owner(self.name, &solana_system_interface::program::ID)
             .map_err(|_| crate::Error::AlreadyRegistered)?;
         check_account_owner(self.vault, &spl_token::ID).unwrap();
-        check_account_owner(self.state, &system_program::ID).unwrap();
+        check_account_owner(self.state, &solana_system_interface::program::ID).unwrap();
 
         // Check signer
         check_signer(self.buyer).unwrap();
