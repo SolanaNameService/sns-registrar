@@ -44,6 +44,12 @@ async fn test_state() {
         .await
         .unwrap();
 
+    let vault_pre_balance = get_vault(&mut ctx, &vault).await.amount;
+    eprintln!(
+        "Vault pre-balance {}",
+        (vault_pre_balance as f64) / (10.0f64).powi(6)
+    );
+
     // Test: Create domain with referrer
     let domain = random_string();
     let usd_price = sns_registrar::utils::get_usd_price(domain.len());
@@ -89,12 +95,37 @@ async fn test_state() {
     let vault_acc = get_vault(&mut ctx, &vault).await;
     let referrer_ata = get_vault(&mut ctx, &referrer_ata).await;
     let usdc_price_fp32 = parse_price_feed_fp32(pyth_accounts.usdc_feed_pull.0, 6, 6);
+    eprintln!(
+        "USDC price {}",
+        (usdc_price_fp32 as f64) / (2.0f64).powi(32)
+    );
+    eprintln!(
+        "Domain USD price {}",
+        (usd_price as f64) / (10.0f64).powi(6)
+    );
     let usdc_price = (usd_price << 32) / usdc_price_fp32;
-    let usdc_price = (usdc_price * 95) / 100;
+    // let usdc_price = (usdc_price * 95) / 100;
     let usdc_price = (usdc_price * (100 - discount)) / 100;
     let ref_fees = usdc_price * fee / 100;
     expected_ref_fees += ref_fees;
     expected_vault_amount += usdc_price - ref_fees;
+
+    eprintln!(
+        "Vault post-balance {}",
+        (vault_acc.amount as f64) / (10.0f64).powi(6)
+    );
+    eprintln!(
+        "Expected vault post-balance {}",
+        (expected_vault_amount as f64) / (10.0f64).powi(6)
+    );
+    eprintln!(
+        "Referrer balance {}",
+        (referrer_ata.amount as f64) / (10.0f64).powi(6)
+    );
+    eprintln!(
+        "Expected referral fee {}",
+        (expected_ref_fees as f64) / (10.0f64).powi(6)
+    );
 
     assert_eq!(vault_acc.amount, expected_vault_amount);
     assert_eq!(referrer_ata.amount, expected_ref_fees);
