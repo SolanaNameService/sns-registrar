@@ -78,9 +78,9 @@ async fn test_state() {
 
     // Verify state
     let vault_acc = get_vault(&mut ctx, &vault).await;
-    let fida_usd_price = parse_price_feed_fp32(pyth_accounts.usdc_feed_pull.0, 6, 6);
-    let fida_price = (usd_price << 32) / fida_usd_price;
-    expected_vault_amount += (fida_price * 95) / 100;
+    let usdc_usdc_price = parse_price_feed_fp32(pyth_accounts.usdc_feed_pull.0, 6, 6);
+    let usdc_price = (usd_price << 32) / usdc_usdc_price;
+    expected_vault_amount += usdc_price;
     assert_eq!(vault_acc.amount, expected_vault_amount);
 
     // Test:
@@ -337,10 +337,10 @@ async fn test_state_create_split_v1_and_v2() {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Check state
-    // The dumped state of Pyth Push system has the following prices ~ 156.04 SOL (snapshot taken 22/04/24 @1713846180)
-    // i.e domain price 0.12817 SOL
+    // The dumped state of Pyth Push system has the following prices ~ 74.535549 USD / SOL (snapshot taken 22/04/24 @1713846180)
+    // i.e domain price 0.268328336 SOL
     ////////////////////////////////////////////////////////////////////////////////////////////////
     let vault = get_vault(&mut ctx, &vault_ata).await;
-    let balances_2 = 128170275;
+    let balances_2 = 268328336;
     assert_eq!(vault.amount, balances_2);
 }
