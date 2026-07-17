@@ -20,7 +20,11 @@ pub fn process_instruction(
     if let Err(error) = Processor::process_instruction(program_id, accounts, instruction_data) {
         match &error {
             ProgramError::Custom(error_id) => {
-                msg!("Error: {}", crate::Error::from_u32(*error_id).unwrap())
+                if let Some(local_error) = crate::Error::from_u32(*error_id) {
+                    msg!("Error: {}", local_error);
+                } else {
+                    msg!("External custom program error: {:#x}", error_id);
+                }
             }
             error => msg!("Error: {}", error),
         }
