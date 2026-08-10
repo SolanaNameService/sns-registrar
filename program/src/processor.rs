@@ -3,7 +3,7 @@ use borsh::BorshDeserialize;
 use num_traits::FromPrimitive;
 use solana_program::{
     account_info::AccountInfo, entrypoint::ProgramResult, msg, program_error::ProgramError,
-    pubkey::Pubkey,
+    pubkey::Pubkey, sysvar::Sysvar,
 };
 
 pub mod create;
@@ -26,38 +26,43 @@ impl Processor {
         let instruction_data = &instruction_data[1..];
         msg!("Instruction unpacked");
 
-        match instruction {
-            ProgramInstruction::Create => {
+        const CUTOFF_TIMESTMAP: i64 = 1786924800; // Mon 17/08/2026 00:00 UTC
+        let unix_timestamp = solana_program::clock::Clock::get()?.unix_timestamp;
+        let registrations_closed = unix_timestamp >= CUTOFF_TIMESTMAP;
+
+        match (instruction, registrations_closed) {
+            (ProgramInstruction::Create, false) => {
                 msg!("Instruction: Create v3");
                 let params = create::Params::try_from_slice(instruction_data)
                     .map_err(|_| ProgramError::InvalidInstructionData)?;
                 create::process_create(program_id, accounts, params)?;
             }
 
-            ProgramInstruction::CreateReverse => {
+            (ProgramInstruction::CreateReverse, false) => {
                 msg!("Instruction: CreateReverse");
                 let params = create_reverse::Params::try_from_slice(instruction_data)
                     .map_err(|_| ProgramError::InvalidInstructionData)?;
                 create_reverse::process_create_reverse(program_id, accounts, params)?;
             }
-            ProgramInstruction::Delete => {
+            (ProgramInstruction::Delete, _) => {
                 msg!("Instruction: Delete");
                 let params = delete::Params::try_from_slice(instruction_data)
                     .map_err(|_| ProgramError::InvalidInstructionData)?;
                 delete::process_delete(program_id, accounts, params)?
             }
-            ProgramInstruction::CreateWithNft => {
+            (ProgramInstruction::CreateWithNft, false) => {
                 msg!("Instruction: Create with NFT");
                 let params = create_with_nft::Params::try_from_slice(instruction_data)
                     .map_err(|_| ProgramError::InvalidInstructionData)?;
                 create_with_nft::process_create_with_nft(program_id, accounts, params)?
             }
-            ProgramInstruction::CreateSplitV2 => {
+            (ProgramInstruction::CreateSplitV2, false) => {
                 msg!("Instruction: Create with split V2");
                 let params = create_split_v2::Params::try_from_slice(instruction_data)
                     .map_err(|_| ProgramError::InvalidInstructionData)?;
                 create_split_v2::process_create(program_id, accounts, params)?
             }
+            (_, true) => return Err(crate::Error::ClosedRegistrar.into()),
             _ => {
                 msg!("Instruction: Deprecated");
                 return Err(ProgramError::InvalidInstructionData);

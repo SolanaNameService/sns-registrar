@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Check if the Docker image exists
 set -e
 docker build -t sns_registrar .
