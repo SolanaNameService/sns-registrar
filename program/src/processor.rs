@@ -26,9 +26,10 @@ impl Processor {
         let instruction_data = &instruction_data[1..];
         msg!("Instruction unpacked");
 
-        const CUTOFF_TIMESTMAP: i64 = 1786924800; // Mon 17/08/2026 00:00 UTC
+        const CUTOFF_TIMESTAMP: i64 = 1786924800; // Mon 17/08/2026 00:00 UTC
+        const UNPAUSE_TIMESTAMP: i64 = 1787270400; // Fri 21/08/2026 00:00 UTC
         let unix_timestamp = solana_program::clock::Clock::get()?.unix_timestamp;
-        let registrations_closed = unix_timestamp >= CUTOFF_TIMESTMAP;
+        let registrations_closed = (CUTOFF_TIMESTAMP..UNPAUSE_TIMESTAMP).contains(&unix_timestamp);
 
         match (instruction, registrations_closed) {
             (ProgramInstruction::Create, false) => {
