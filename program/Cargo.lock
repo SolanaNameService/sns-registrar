@@ -4669,7 +4669,7 @@ dependencies = [
 
 [[package]]
 name = "sns-registrar"
-version = "0.1.0"
+version = "0.2.0-beta.0"
 dependencies = [
  "base64 0.22.1",
  "bincode",
